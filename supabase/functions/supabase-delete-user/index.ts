@@ -30,8 +30,8 @@ serve(async (request: Request): Promise<Response> => {
         return buildErrorResponse(500, response.error)
     }
     const removedFiles = await userClient.storage.from('images').list(id)
-    const removedFileNames = removedFiles.data?.map((e) => `${id}/${e.name}`)
-    if (removedFileNames) {
+    const removedFileNames = removedFiles.data?.map((e) => `${id}/${e.name}`) ?? []
+    if (removedFileNames.length > 0) {
         const removed = await userClient.storage.from('images').remove(removedFileNames)
         if (removed.error) {
             return buildErrorResponse(500, removed.error)
